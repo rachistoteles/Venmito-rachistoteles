@@ -1,0 +1,45 @@
+Table people {
+  id SERIAL [primary key]
+  first_name VARCHAR(100)
+  last_name VARCHAR(100)
+  telephone VARCHAR(20)
+  email VARCHAR(100)
+  devices TEXT[]
+  location JSONB
+}
+
+Table transactions {
+  id SERIAL [primary key]
+  transaction_id INTEGER [unique, not null]
+  phone VARCHAR(15)
+  store VARCHAR(255)
+}
+
+Table transaction_items {
+  id SERIAL [primary key]
+  transaction_id INTEGER [not null]
+  item_name VARCHAR(255) [not null]
+  price NUMERIC(10,2) [not null]
+  price_per_item NUMERIC(10,2) [not null]
+  quantity INTEGER [not null]
+}
+
+Table transfers {
+  id SERIAL [primary key]
+  sender_id INTEGER [not null]
+  recipient_id INTEGER [not null]
+  amount NUMERIC(10,2) [not null]
+  date DATE [not null]
+}
+
+Table promotions {
+  id SERIAL [primary key]
+  person_id INTEGER
+  promotion VARCHAR(255) [not null]
+  responded BOOLEAN [not null]
+}
+
+Ref: transaction_items.transaction_id > transactions.transaction_id
+Ref: transfers.sender_id > people.id
+Ref: transfers.recipient_id > people.id
+Ref: promotions.person_id > people.id
